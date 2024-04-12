@@ -10,6 +10,7 @@ use filetime::set_symlink_file_times;
 use filetime::FileTime;
 use std::fs::remove_file;
 use std::path::PathBuf;
+use chrono::TimeZone;
 
 fn get_file_times(at: &AtPath, path: &str) -> (FileTime, FileTime) {
     let m = at.metadata(path);
@@ -33,9 +34,19 @@ fn set_file_times(at: &AtPath, path: &str, atime: FileTime, mtime: FileTime) {
 }
 
 fn str_to_filetime(format: &str, s: &str) -> FileTime {
+    str_to_filetime_opt(format, s, true)
+}
+
+fn str_to_filetime_opt(format: &str, s: &str, offset: bool) -> FileTime {
     let tm = chrono::NaiveDateTime::parse_from_str(s, format).unwrap();
+    let mut utc_offset: i64 = 0;
+    if cfg!(windows) && offset {
+        utc_offset = chrono::Local.timestamp_opt(0, 0).unwrap()
+            .offset()
+            .local_minus_utc().into();
+    }
     FileTime::from_unix_time(
-        tm.and_utc().timestamp(),
+        tm.and_utc().timestamp() - utc_offset,
         tm.and_utc().timestamp_subsec_nanos(),
     )
 }
@@ -241,7 +252,7 @@ fn test_touch_set_both_date_and_reference() {
     let ref_file = "test_touch_reference";
     let file = "test_touch_set_both_date_and_reference";
 
-    let start_of_year = str_to_filetime("%Y%m%d%H%M", "201501011234");
+    let mut start_of_year = str_to_filetime("%Y%m%d%H%M", "201501011234");
 
     at.touch(ref_file);
     set_file_times(&at, ref_file, start_of_year, start_of_year);
@@ -250,6 +261,10 @@ fn test_touch_set_both_date_and_reference() {
     ucmd.args(&["-d", "Thu Jan 01 12:34:00 2015", "-r", ref_file, file])
         .succeeds()
         .no_stderr();
+
+    if cfg!(windows) {
+        start_of_year = str_to_filetime_opt("%Y%m%d%H%M", "201501011234", false);
+    }
     let (atime, mtime) = get_file_times(&at, file);
     assert_eq!(atime, start_of_year);
     assert_eq!(mtime, start_of_year);
@@ -400,7 +415,7 @@ fn test_touch_set_date() {
 
     assert!(at.file_exists(file));
 
-    let start_of_year = str_to_filetime("%Y%m%d%H%M", "201501011234");
+    let start_of_year = str_to_filetime_opt("%Y%m%d%H%M", "201501011234", false);
     let (atime, mtime) = get_file_times(&at, file);
     assert_eq!(atime, mtime);
     assert_eq!(atime, start_of_year);
