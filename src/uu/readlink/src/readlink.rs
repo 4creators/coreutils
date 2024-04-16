@@ -5,10 +5,10 @@
 
 // spell-checker:ignore (ToDO) errno
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs;
 use std::io::{stdout, Write};
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::fs::{canonicalize, MissingHandling, ResolveMode};
@@ -173,7 +173,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(ARG_FILES)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

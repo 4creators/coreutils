@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (ToDO) cmdline evec nonrepeating seps shufable rvec fdata
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use memchr::memchr_iter;
 use rand::prelude::SliceRandom;
 use rand::{Rng, RngCore};
@@ -13,6 +12,7 @@ use std::collections::HashSet;
 use std::fs::File;
 use std::io::{stdin, stdout, BufReader, BufWriter, Error, Read, Write};
 use std::ops::RangeInclusive;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::{format_usage, help_about, help_usage};
@@ -145,7 +145,7 @@ pub fn uu_app() -> Command {
                 .short('e')
                 .long(options::ECHO)
                 .help("treat each ARG as an input line")
-                .action(clap::ArgAction::SetTrue)
+                .action(ArgAction::SetTrue)
                 .overrides_with(options::ECHO)
                 .conflicts_with(options::INPUT_RANGE),
         )
@@ -162,7 +162,7 @@ pub fn uu_app() -> Command {
                 .short('n')
                 .long(options::HEAD_COUNT)
                 .value_name("COUNT")
-                .action(clap::ArgAction::Append)
+                .action(ArgAction::Append)
                 .help("output at most COUNT lines"),
         )
         .arg(
@@ -171,14 +171,14 @@ pub fn uu_app() -> Command {
                 .long(options::OUTPUT)
                 .value_name("FILE")
                 .help("write result to FILE instead of standard output")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::RANDOM_SOURCE)
                 .long(options::RANDOM_SOURCE)
                 .value_name("FILE")
                 .help("get random bytes from FILE")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::REPEAT)
@@ -198,8 +198,8 @@ pub fn uu_app() -> Command {
         )
         .arg(
             Arg::new(options::FILE_OR_ARGS)
-                .action(clap::ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .action(ArgAction::Append)
+                .value_hint(ValueHint::FilePath),
         )
 }
 

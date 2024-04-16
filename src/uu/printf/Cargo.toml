@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/printf.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["format", "quoting-style"] }
 
 [[bin]]

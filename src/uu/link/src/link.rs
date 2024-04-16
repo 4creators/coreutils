@@ -2,11 +2,10 @@
 //
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, Command};
 use std::ffi::OsString;
 use std::fs::hard_link;
 use std::path::Path;
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult};
 use uucore::{format_usage, help_about, help_usage};
@@ -44,7 +43,7 @@ pub fn uu_app() -> Command {
                 .hide(true)
                 .required(true)
                 .num_args(2)
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .value_parser(ValueParser::os_string()),
         )
 }

@@ -7,8 +7,8 @@
 
 // spell-checker:ignore (ToDO) ttyname filedesc
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::io::{IsTerminal, Write};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::error::{set_exit_code, UResult};
 use uucore::{format_usage, help_about, help_usage};
 

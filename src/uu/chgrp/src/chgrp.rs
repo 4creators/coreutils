@@ -11,7 +11,7 @@ use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::perms::{chown_base, options, GidUidOwnerFilter, IfFrom};
 use uucore::{format_usage, help_about, help_usage};
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 
 use std::fs;
 use std::os::unix::fs::MetadataExt;
@@ -131,7 +131,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::REFERENCE)
                 .long(options::REFERENCE)
                 .value_name("RFILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .help("use RFILE's group rather than specifying GROUP values"),
         )
         .arg(

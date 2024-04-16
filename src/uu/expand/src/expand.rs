@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (ToDO) ctype cwidth iflag nbytes nspaces nums tspaces uflag Preprocess
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::error::Error;
 use std::ffi::OsString;
 use std::fmt;
@@ -15,6 +14,7 @@ use std::num::IntErrorKind;
 use std::path::Path;
 use std::str::from_utf8;
 use unicode_width::UnicodeWidthChar;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, FromIo, UError, UResult};
 use uucore::{format_usage, help_about, help_usage, show_error};
@@ -307,7 +307,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILES)
                 .action(ArgAction::Append)
                 .hide(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

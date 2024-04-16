@@ -4,7 +4,6 @@
 // file that was distributed with this source code.
 
 // spell-checker:ignore (ToDO) fname, algo
-use clap::{crate_version, value_parser, Arg, ArgAction, Command};
 use hex::decode;
 use hex::encode;
 use std::error::Error;
@@ -14,6 +13,7 @@ use std::fs::File;
 use std::io::{self, stdin, stdout, BufReader, Read, Write};
 use std::iter;
 use std::path::Path;
+use uucore::deps::clap::{crate_version, value_parser, Arg, ArgAction, Command, ValueHint};
 use uucore::{
     encoding,
     error::{FromIo, UError, UResult, USimpleError},
@@ -395,8 +395,8 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .hide(true)
-                .action(clap::ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .action(ArgAction::Append)
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::ALGORITHM)

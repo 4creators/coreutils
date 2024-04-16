@@ -5,8 +5,8 @@
 // spell-checker:ignore (ToDO) extendedbigdecimal numberparse
 use std::io::{stdout, ErrorKind, Write};
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use num_traits::{ToPrimitive, Zero};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 
 use uucore::error::{FromIo, UResult};
 use uucore::format::{num_format, Format};

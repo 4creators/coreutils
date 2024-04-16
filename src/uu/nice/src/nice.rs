@@ -10,7 +10,7 @@ use std::ffi::{CString, OsString};
 use std::io::{Error, Write};
 use std::ptr;
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::{
     error::{set_exit_code, UClapError, UResult, USimpleError, UUsageError},
     format_usage, help_about, help_usage, show_error,
@@ -204,6 +204,6 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::COMMAND)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
 }

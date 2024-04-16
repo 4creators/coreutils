@@ -5,8 +5,8 @@
 
 //spell-checker:ignore (args) lsbf msbf
 
-use clap::{Arg, ArgAction, Command};
 use uu_base32::base_common::{self, Config, BASE_CMD_PARSE_ERROR};
+use uucore::deps::clap::{Arg, ArgAction, Command};
 
 use uucore::{
     encoding::Format,

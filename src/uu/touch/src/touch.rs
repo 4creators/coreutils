@@ -10,12 +10,13 @@ use chrono::{
     DateTime, Datelike, Duration, Local, LocalResult, NaiveDate, NaiveDateTime, NaiveTime,
     TimeZone, Timelike,
 };
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, ArgAction, ArgGroup, ArgMatches, Command};
 use filetime::{set_file_times, set_symlink_file_times, FileTime};
 use std::ffi::OsString;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgGroup, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage, show};
@@ -204,7 +205,7 @@ pub fn uu_app() -> Command {
                 .help("use this file's times instead of the current time")
                 .value_name("FILE")
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .conflicts_with(options::sources::TIMESTAMP),
         )
         .arg(
@@ -223,7 +224,7 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .num_args(1..)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
         .group(
             ArgGroup::new(options::SOURCES)

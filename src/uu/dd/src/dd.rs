@@ -45,13 +45,13 @@ use std::sync::{atomic::Ordering::Relaxed, mpsc, Arc};
 use std::thread;
 use std::time::{Duration, Instant};
 
-use clap::{crate_version, Arg, Command};
 use gcd::Gcd;
 #[cfg(target_os = "linux")]
 use nix::{
     errno::Errno,
     fcntl::{posix_fadvise, PosixFadviseAdvice},
 };
+use uucore::deps::clap::{crate_version, Arg, Command};
 use uucore::display::Quotable;
 #[cfg(unix)]
 use uucore::error::set_exit_code;

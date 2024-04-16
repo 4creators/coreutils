@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/hostname.rs"
 
 [dependencies]
-clap = { workspace = true }
 hostname = { workspace = true, features = ["set"] }
 uucore = { workspace = true, features = ["wide"] }
 

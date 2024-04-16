@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/tty.rs"
 
 [dependencies]
-clap = { workspace = true }
 nix = { workspace = true, features = ["term"] }
 uucore = { workspace = true, features = ["fs"] }
 

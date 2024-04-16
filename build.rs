@@ -98,4 +98,27 @@ pub fn main() {
     mf.write_all(b"\n}\n").unwrap();
 
     mf.flush().unwrap();
+
+    let target_dir = get_cargo_target_dir(&out_dir).unwrap();
+
+    println!("cargo:rustc-link-arg=-Wl,-rpath=./:./deps:{}", target_dir);
+    println!("cargo:rerun-if-changed=build.rs");
+}
+
+fn get_cargo_target_dir(path: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let out_dir = std::path::PathBuf::from(path);
+    let profile = std::env::var("PROFILE")?;
+    println!("Searching for cargo target output directory for profile: {profile}");
+    let mut target_dir = None;
+    let mut sub_path = out_dir.as_path();
+    while let Some(parent) = sub_path.parent() {
+        println!("Path  walk: {}", parent.display());
+        if parent.to_str().unwrap().contains(&profile) {
+            target_dir = Some(parent);
+            break;
+        }
+        sub_path = parent;
+    }
+    let target_dir = target_dir.ok_or("cargo target output directory not found")?;
+    Ok(String::from(target_dir.to_str().unwrap()))
 }

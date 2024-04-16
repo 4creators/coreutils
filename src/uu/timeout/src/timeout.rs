@@ -7,11 +7,11 @@
 mod status;
 
 use crate::status::ExitStatus;
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::io::ErrorKind;
 use std::os::unix::process::ExitStatusExt;
 use std::process::{self, Child, Stdio};
 use std::time::Duration;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{UClapError, UResult, USimpleError, UUsageError};
 use uucore::process::ChildExt;
@@ -51,7 +51,7 @@ struct Config {
 }
 
 impl Config {
-    fn from(options: &clap::ArgMatches) -> UResult<Self> {
+    fn from(options: &ArgMatches) -> UResult<Self> {
         let signal = match options.get_one::<String>(options::SIGNAL) {
             Some(signal_) => {
                 let signal_result = signal_by_name_or_value(signal_);
@@ -173,7 +173,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::COMMAND)
                 .required(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
         .trailing_var_arg(true)
         .infer_long_args(true)

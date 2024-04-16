@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (words) wipesync prefill
 
-use clap::{crate_version, Arg, ArgAction, Command};
 #[cfg(unix)]
 use libc::S_IWUSR;
 use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
@@ -14,6 +13,7 @@ use std::io::{self, Seek, Write};
 #[cfg(unix)]
 use std::os::unix::prelude::PermissionsExt;
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::parse_size::parse_size_u64;
@@ -354,7 +354,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

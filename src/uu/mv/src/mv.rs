@@ -7,8 +7,6 @@
 
 mod error;
 
-use clap::builder::ValueParser;
-use clap::{crate_version, error::ErrorKind, Arg, ArgAction, ArgMatches, Command};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use std::collections::HashSet;
 use std::env;
@@ -21,6 +19,10 @@ use std::os::unix;
 use std::os::windows;
 use std::path::{Path, PathBuf};
 use uucore::backup_control::{self, source_is_target_backup};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, error::ErrorKind, Arg, ArgAction, ArgMatches, Command,
+    ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, FromIo, UResult, USimpleError, UUsageError};
 use uucore::fs::{
@@ -220,7 +222,7 @@ pub fn uu_app() -> Command {
                 .long(OPT_TARGET_DIRECTORY)
                 .help("move all SOURCE arguments into DIRECTORY")
                 .value_name("DIRECTORY")
-                .value_hint(clap::ValueHint::DirPath)
+                .value_hint(ValueHint::DirPath)
                 .conflicts_with(OPT_NO_TARGET_DIRECTORY)
                 .value_parser(ValueParser::os_string()),
         )
@@ -254,7 +256,7 @@ pub fn uu_app() -> Command {
                 .num_args(1..)
                 .required(true)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

@@ -2,11 +2,11 @@
 //
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
-use clap::{crate_version, Arg, Command};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs::File;
 use std::io::{stdin, BufReader, Read};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, Arg, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage};
@@ -94,7 +94,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .default_value("-")
                 .hide(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/whoami.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["entries", "process"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]

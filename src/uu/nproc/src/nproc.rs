@@ -5,8 +5,8 @@
 
 // spell-checker:ignore (ToDO) NPROCESSORS nprocs numstr threadstr sysconf
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::{env, thread};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage};

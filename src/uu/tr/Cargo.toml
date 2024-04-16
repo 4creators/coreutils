@@ -16,7 +16,6 @@ path = "src/tr.rs"
 
 [dependencies]
 nom = { workspace = true }
-clap = { workspace = true }
 uucore = { workspace = true }
 
 [[bin]]

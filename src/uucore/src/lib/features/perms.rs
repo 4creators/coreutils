@@ -7,11 +7,11 @@
 
 // spell-checker:ignore (jargon) TOCTOU
 
+use crate::deps::clap::{Arg, ArgMatches, Command};
 use crate::display::Quotable;
 use crate::error::{strip_errno, UResult, USimpleError};
 pub use crate::features::entries;
 use crate::show_error;
-use clap::{Arg, ArgMatches, Command};
 use libc::{gid_t, uid_t};
 use walkdir::WalkDir;
 

@@ -8,11 +8,11 @@
 mod operation;
 mod unicode_table;
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use operation::{
     translate_input, Sequence, SqueezeOperation, SymbolTranslator, TranslateOperation,
 };
 use std::io::{stdin, stdout, BufWriter};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::{format_usage, help_about, help_section, help_usage, show};
 
 use crate::operation::DeleteOperation;

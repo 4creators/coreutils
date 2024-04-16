@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (ToDO) nums aflag uflag scol prevtab amode ctype cwidth nbytes lastcol pctype Preprocess
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::error::Error;
 use std::fmt;
 use std::fs::File;
@@ -14,6 +13,7 @@ use std::num::IntErrorKind;
 use std::path::Path;
 use std::str::from_utf8;
 use unicode_width::UnicodeWidthChar;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UError, UResult, USimpleError};
 use uucore::{crash_if_err, format_usage, help_about, help_usage, show};
@@ -96,7 +96,7 @@ struct Options {
 }
 
 impl Options {
-    fn new(matches: &clap::ArgMatches) -> Result<Self, ParseError> {
+    fn new(matches: &ArgMatches) -> Result<Self, ParseError> {
         let tabstops = match matches.get_many::<String>(options::TABS) {
             None => vec![DEFAULT_TABSTOP],
             Some(s) => tabstops_parse(&s.map(|s| s.as_str()).collect::<Vec<_>>().join(","))?,
@@ -175,7 +175,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::ALL)

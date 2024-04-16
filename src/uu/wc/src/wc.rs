@@ -20,10 +20,12 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use clap::{builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command};
 use thiserror::Error;
 use unicode_width::UnicodeWidthChar;
 use utf8::{BufReadDecoder, BufReadDecoderError};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 
 use uucore::{
     error::{FromIo, UError, UResult},
@@ -420,7 +422,7 @@ pub fn uu_app() -> Command {
                     "  If F is - then read names from standard input"
                 ))
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::LINES)
@@ -458,7 +460,7 @@ pub fn uu_app() -> Command {
             Arg::new(ARG_FILES)
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

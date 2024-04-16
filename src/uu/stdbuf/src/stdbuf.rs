@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (ToDO) tempdir dyld dylib dragonflybsd optgrps libstdbuf
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::fs::File;
 use std::io::Write;
 use std::os::unix::process::ExitStatusExt;
@@ -13,6 +12,7 @@ use std::path::PathBuf;
 use std::process;
 use tempfile::tempdir;
 use tempfile::TempDir;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::parse_size::parse_size_u64;
 use uucore::{format_usage, help_about, help_section, help_usage};
@@ -213,6 +213,6 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .hide(true)
                 .required(true)
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
 }

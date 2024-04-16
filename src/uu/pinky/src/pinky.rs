@@ -5,7 +5,7 @@
 
 // spell-checker:ignore (ToDO) BUFSIZE gecos fullname, mesg iobuf
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::{format_usage, help_about, help_usage};
 
 mod platform;
@@ -95,7 +95,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::USER)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::Username),
+                .value_hint(ValueHint::Username),
         )
         .arg(
             // Redefine the help argument to not include the short flag

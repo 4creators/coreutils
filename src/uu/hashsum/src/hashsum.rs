@@ -5,13 +5,7 @@
 
 // spell-checker:ignore (ToDO) algo, algoname, regexes, nread, nonames
 
-use clap::builder::ValueParser;
-use clap::crate_version;
-use clap::ArgAction;
-use clap::{Arg, ArgMatches, Command};
 use hex::encode;
-use regex::Captures;
-use regex::Regex;
 use std::cmp::Ordering;
 use std::error::Error;
 use std::ffi::{OsStr, OsString};
@@ -20,6 +14,11 @@ use std::io::{self, stdin, BufRead, BufReader, Read};
 use std::iter;
 use std::num::ParseIntError;
 use std::path::Path;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
+use uucore::deps::regex::Captures;
+use uucore::deps::regex::Regex;
 use uucore::error::USimpleError;
 use uucore::error::{FromIo, UError, UResult};
 use uucore::sum::{
@@ -450,7 +449,7 @@ pub fn uu_app_common() -> Command {
                 .index(1)
                 .action(ArgAction::Append)
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .value_parser(ValueParser::os_string()),
         )
 }

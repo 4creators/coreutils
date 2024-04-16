@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/mv.rs"
 
 [dependencies]
-clap = { workspace = true }
 fs_extra = { workspace = true }
 indicatif = { workspace = true }
 uucore = { workspace = true, features = [

@@ -5,10 +5,10 @@
 
 // cSpell:ignore strs
 
-use clap::{builder::ValueParser, crate_version, Arg, ArgAction, Command};
 use std::error::Error;
 use std::ffi::OsString;
 use std::io::{self, Write};
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, ArgAction, Command};
 use uucore::error::{UResult, USimpleError};
 #[cfg(unix)]
 use uucore::signals::enable_pipe_errors;

@@ -3,9 +3,9 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use libc::mkfifo;
 use std::ffi::CString;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage, show};
@@ -93,6 +93,6 @@ pub fn uu_app() -> Command {
             Arg::new(options::FIFO)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }

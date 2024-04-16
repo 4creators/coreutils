@@ -38,9 +38,9 @@ use crate::{
     OPT_ADDITIONAL_SUFFIX, OPT_HEX_SUFFIXES, OPT_HEX_SUFFIXES_SHORT, OPT_NUMERIC_SUFFIXES,
     OPT_NUMERIC_SUFFIXES_SHORT, OPT_SUFFIX_LENGTH,
 };
-use clap::ArgMatches;
 use std::fmt;
 use std::path::is_separator;
+use uucore::deps::clap::ArgMatches;
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError};
 

@@ -7,12 +7,12 @@
 mod error;
 
 use crate::error::ChrootError;
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::ffi::CString;
 use std::io::Error;
 use std::os::unix::prelude::OsStrExt;
 use std::path::Path;
 use std::process;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::error::{set_exit_code, UClapError, UResult, UUsageError};
 use uucore::fs::{canonicalize, MissingHandling, ResolveMode};
 use uucore::libc::{self, chroot, setgid, setgroups, setuid};
@@ -120,7 +120,7 @@ pub fn uu_app() -> Command {
         .trailing_var_arg(true)
         .arg(
             Arg::new(options::NEWROOT)
-                .value_hint(clap::ValueHint::DirPath)
+                .value_hint(ValueHint::DirPath)
                 .hide(true)
                 .required(true)
                 .index(1),
@@ -169,13 +169,13 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::COMMAND)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::CommandName)
+                .value_hint(ValueHint::CommandName)
                 .hide(true)
                 .index(2),
         )
 }
 
-fn set_context(root: &Path, options: &clap::ArgMatches) -> UResult<()> {
+fn set_context(root: &Path, options: &ArgMatches) -> UResult<()> {
     let userspec_str = options.get_one::<String>(options::USERSPEC);
     let user_str = options
         .get_one::<String>(options::USER)

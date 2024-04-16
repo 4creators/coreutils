@@ -5,9 +5,9 @@
 #![allow(unused_must_use)] // because we of writeln!
 
 // spell-checker:ignore (ToDO) lstat
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs;
 use std::io::{ErrorKind, Write};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, UResult, UUsageError};
 use uucore::{format_usage, help_about, help_usage};
@@ -105,7 +105,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::PATH)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

@@ -9,7 +9,7 @@
 use std::io::stdout;
 use std::ops::ControlFlow;
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::error::{UResult, UUsageError};
 use uucore::format::{parse_spec_and_escape, FormatArgument, FormatItem};
 use uucore::{format_usage, help_about, help_section, help_usage};

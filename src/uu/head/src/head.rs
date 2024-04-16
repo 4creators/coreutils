@@ -5,9 +5,9 @@
 
 // spell-checker:ignore (vars) BUFWRITER seekable
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::ffi::OsString;
 use std::io::{self, BufWriter, ErrorKind, Read, Seek, SeekFrom, Write};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
@@ -108,7 +108,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILES_NAME)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 
@@ -194,7 +194,7 @@ struct HeadOptions {
 
 impl HeadOptions {
     ///Construct options from matches
-    pub fn get_from(matches: &clap::ArgMatches) -> Result<Self, String> {
+    pub fn get_from(matches: &ArgMatches) -> Result<Self, String> {
         let mut options = Self::default();
 
         options.quiet = matches.get_flag(options::QUIET_NAME);

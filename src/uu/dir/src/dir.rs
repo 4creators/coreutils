@@ -3,10 +3,10 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::Command;
 use std::ffi::OsString;
 use std::path::Path;
 use uu_ls::{options, Config, Format};
+use uucore::deps::clap::Command;
 use uucore::error::UResult;
 use uucore::quoting_style::{Quotes, QuotingStyle};
 

@@ -3,14 +3,14 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 // spell-checker:ignore badoption
-use clap::{
-    builder::ValueParser, crate_version, error::ContextKind, error::Error, error::ErrorKind, Arg,
-    ArgAction, ArgMatches, Command,
-};
 use std::ffi::{OsStr, OsString};
 use std::fs::File;
 use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Write};
 use std::num::IntErrorKind;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, error::ContextKind, error::ErrorKind, Arg, ArgAction,
+    ArgMatches, Command, Error, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UError, UResult, USimpleError};
 use uucore::posix::{posix_version, OBSOLETE};
@@ -703,7 +703,7 @@ pub fn uu_app() -> Command {
                 .value_parser(ValueParser::os_string())
                 .num_args(0..=2)
                 .hide(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

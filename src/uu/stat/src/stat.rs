@@ -4,7 +4,6 @@
 // file that was distributed with this source code.
 // spell-checker:ignore datetime
 
-use clap::builder::ValueParser;
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::fs::display_permissions;
@@ -15,13 +14,15 @@ use uucore::{
 };
 
 use chrono::{DateTime, Local};
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::borrow::Cow;
 use std::ffi::{OsStr, OsString};
 use std::fs;
 use std::os::unix::fs::{FileTypeExt, MetadataExt};
 use std::os::unix::prelude::OsStrExt;
 use std::path::Path;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 
 const ABOUT: &str = help_about!("stat.md");
 const USAGE: &str = help_usage!("stat.md");
@@ -949,7 +950,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILES)
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

@@ -6,7 +6,6 @@
 // spell-checker:ignore (ToDO) sbytes slen dlen memmem memmap Mmap mmap SIGBUS
 mod error;
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use memchr::memmem;
 use memmap2::Mmap;
 use std::io::{stdin, stdout, BufWriter, Read, Write};
@@ -14,6 +13,8 @@ use std::{
     fs::{read, File},
     path::Path,
 };
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
+use uucore::deps::regex::bytes::Regex as RegexBinary;
 use uucore::display::Quotable;
 use uucore::error::UError;
 use uucore::error::UResult;
@@ -86,7 +87,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 
@@ -108,11 +109,7 @@ pub fn uu_app() -> Command {
 ///
 /// If there is a problem writing to `stdout`, then this function
 /// returns [`std::io::Error`].
-fn buffer_tac_regex(
-    data: &[u8],
-    pattern: &regex::bytes::Regex,
-    before: bool,
-) -> std::io::Result<()> {
+fn buffer_tac_regex(data: &[u8], pattern: &RegexBinary, before: bool) -> std::io::Result<()> {
     let out = stdout();
     let mut out = BufWriter::new(out.lock());
 
@@ -222,7 +219,7 @@ fn buffer_tac(data: &[u8], before: bool, separator: &str) -> std::io::Result<()>
 fn tac(filenames: &[&str], before: bool, regex: bool, separator: &str) -> UResult<()> {
     // Compile the regular expression pattern if it is provided.
     let maybe_pattern = if regex {
-        match regex::bytes::Regex::new(separator) {
+        match RegexBinary::new(separator) {
             Ok(p) => Some(p),
             Err(e) => return Err(TacError::InvalidRegex(e).into()),
         }

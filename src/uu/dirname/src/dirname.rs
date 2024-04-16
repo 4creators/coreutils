@@ -3,8 +3,8 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::print_verbatim;
 use uucore::error::{UResult, UUsageError};
 use uucore::line_ending::LineEnding;
@@ -77,6 +77,6 @@ pub fn uu_app() -> Command {
             Arg::new(options::DIR)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }

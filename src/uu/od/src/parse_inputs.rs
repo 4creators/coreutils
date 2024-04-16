@@ -3,7 +3,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 use super::options;
-use clap::ArgMatches;
+use uucore::deps::clap::{parser::ValueSource, ArgMatches};
 
 /// Abstraction for getopts
 pub trait CommandLineOpts {
@@ -23,7 +23,7 @@ impl CommandLineOpts for ArgMatches {
 
     fn opts_present(&self, opts: &[&str]) -> bool {
         opts.iter()
-            .any(|opt| self.value_source(opt) == Some(clap::parser::ValueSource::CommandLine))
+            .any(|opt| self.value_source(opt) == Some(ValueSource::CommandLine))
     }
 }
 

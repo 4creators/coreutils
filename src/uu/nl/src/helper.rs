@@ -5,11 +5,12 @@
 // spell-checker:ignore (ToDO) conv
 
 use crate::options;
+use uucore::deps::clap::ArgMatches;
 
 // parse_options loads the options into the settings, returning an array of
 // error messages.
 #[allow(clippy::cognitive_complexity)]
-pub fn parse_options(settings: &mut crate::Settings, opts: &clap::ArgMatches) -> Vec<String> {
+pub fn parse_options(settings: &mut crate::Settings, opts: &ArgMatches) -> Vec<String> {
     // This vector holds error messages encountered.
     let mut errs: Vec<String> = vec![];
     settings.renumber = opts.get_flag(options::NO_RENUMBER);

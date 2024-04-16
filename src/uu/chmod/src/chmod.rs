@@ -5,11 +5,11 @@
 
 // spell-checker:ignore (ToDO) Chmoder cmode fmode fperm fref ugoa RFILE RFILE's
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::ffi::OsString;
 use std::fs;
 use std::os::unix::fs::{MetadataExt, PermissionsExt};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, ExitCode, UResult, USimpleError, UUsageError};
 use uucore::fs::display_permissions_unix;
@@ -202,7 +202,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::REFERENCE)
                 .long("reference")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .help("use RFILE's mode instead of MODE values"),
         )
         .arg(
@@ -214,7 +214,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .required_unless_present(options::MODE)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

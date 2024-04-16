@@ -3,10 +3,11 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs::File;
 use std::io::{stdin, BufRead, BufReader, Read};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, value_parser, Arg, ArgAction, Command, ValueHint};
+use uucore::deps::regex::Regex;
 use uucore::error::{set_exit_code, FromIo, UResult, USimpleError};
 use uucore::{format_usage, help_about, help_section, help_usage, show_error};
 
@@ -79,7 +80,7 @@ enum NumberingStyle {
     All,
     NonEmpty,
     None,
-    Regex(Box<regex::Regex>),
+    RegexVar(Box<Regex>),
 }
 
 impl TryFrom<&str> for NumberingStyle {
@@ -90,8 +91,8 @@ impl TryFrom<&str> for NumberingStyle {
             "a" => Ok(Self::All),
             "t" => Ok(Self::NonEmpty),
             "n" => Ok(Self::None),
-            _ if s.starts_with('p') => match regex::Regex::new(&s[1..]) {
-                Ok(re) => Ok(Self::Regex(Box::new(re))),
+            _ if s.starts_with('p') => match Regex::new(&s[1..]) {
+                Ok(re) => Ok(Self::RegexVar(Box::new(re))),
                 Err(_) => Err(String::from("invalid regular expression")),
             },
             _ => Err(format!("invalid numbering style: '{s}'")),
@@ -238,7 +239,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::BODY_NUMBERING)
@@ -274,7 +275,7 @@ pub fn uu_app() -> Command {
                 .long(options::LINE_INCREMENT)
                 .help("line number increment at each line")
                 .value_name("NUMBER")
-                .value_parser(clap::value_parser!(i64)),
+                .value_parser(value_parser!(i64)),
         )
         .arg(
             Arg::new(options::JOIN_BLANK_LINES)
@@ -282,7 +283,7 @@ pub fn uu_app() -> Command {
                 .long(options::JOIN_BLANK_LINES)
                 .help("group of NUMBER empty lines counted as one")
                 .value_name("NUMBER")
-                .value_parser(clap::value_parser!(u64)),
+                .value_parser(value_parser!(u64)),
         )
         .arg(
             Arg::new(options::NUMBER_FORMAT)
@@ -312,7 +313,7 @@ pub fn uu_app() -> Command {
                 .long(options::STARTING_LINE_NUMBER)
                 .help("first line number on each logical page")
                 .value_name("NUMBER")
-                .value_parser(clap::value_parser!(i64)),
+                .value_parser(value_parser!(i64)),
         )
         .arg(
             Arg::new(options::NUMBER_WIDTH)
@@ -320,7 +321,7 @@ pub fn uu_app() -> Command {
                 .long(options::NUMBER_WIDTH)
                 .help("use NUMBER columns for line numbers")
                 .value_name("NUMBER")
-                .value_parser(clap::value_parser!(usize)),
+                .value_parser(value_parser!(usize)),
         )
 }
 
@@ -364,7 +365,7 @@ fn nl<T: Read>(reader: &mut BufReader<T>, stats: &mut Stats, settings: &Settings
                 NumberingStyle::All => true,
                 NumberingStyle::NonEmpty => !line.is_empty(),
                 NumberingStyle::None => false,
-                NumberingStyle::Regex(re) => re.is_match(&line),
+                NumberingStyle::RegexVar(re) => re.is_match(&line),
             };
 
             if is_line_numbered {

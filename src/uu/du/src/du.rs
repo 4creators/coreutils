@@ -4,7 +4,6 @@
 // file that was distributed with this source code.
 
 use chrono::{DateTime, Local};
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use glob::Pattern;
 use std::collections::HashSet;
 use std::env;
@@ -25,6 +24,7 @@ use std::str::FromStr;
 use std::sync::mpsc;
 use std::thread;
 use std::time::{Duration, UNIX_EPOCH};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::{print_verbatim, Quotable};
 use uucore::error::{set_exit_code, FromIo, UError, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
@@ -1022,7 +1022,7 @@ pub fn uu_app() -> Command {
                 .short('X')
                 .long("exclude-from")
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .help("exclude files that match any pattern in FILE")
                 .action(ArgAction::Append)
         )
@@ -1030,7 +1030,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILES0_FROM)
                 .long("files0-from")
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .help("summarize device usage of the NUL-terminated file names specified in file F; if F is -, then read names from standard input")
                 .action(ArgAction::Append)
         )
@@ -1059,7 +1059,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .hide(true)
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .action(ArgAction::Append)
         )
 }

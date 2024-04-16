@@ -5,12 +5,13 @@
 
 // spell-checker:ignore (ToDO) somegroup nlink tabsize dired subdired dtype colorterm stringly
 
-use clap::{
-    builder::{NonEmptyStringValueParser, ValueParser},
-    crate_version, Arg, ArgAction, Command,
-};
 use glob::{MatchOptions, Pattern};
 use lscolors::{LsColors, Style};
+use uucore::deps::clap::{
+    builder::NonEmptyStringValueParser, builder::ValueParser, crate_version,
+    error::ErrorKind as ClapErrorKind, parser::ValueSource, Arg, ArgAction, ArgMatches, Command,
+    ValueHint,
+};
 
 use number_prefix::NumberPrefix;
 use std::{cell::OnceCell, num::IntErrorKind};
@@ -342,7 +343,7 @@ enum TimeStyle {
     Format(String),
 }
 
-fn parse_time_style(options: &clap::ArgMatches) -> Result<TimeStyle, LsError> {
+fn parse_time_style(options: &ArgMatches) -> Result<TimeStyle, LsError> {
     let possible_time_styles = vec![
         "full-iso".to_string(),
         "long-iso".to_string(),
@@ -458,7 +459,7 @@ struct PaddingCollection {
 ///
 /// A tuple containing the Format variant and an Option containing a &'static str
 /// which corresponds to the option used to define the format.
-fn extract_format(options: &clap::ArgMatches) -> (Format, Option<&'static str>) {
+fn extract_format(options: &ArgMatches) -> (Format, Option<&'static str>) {
     if let Some(format_) = options.get_one::<String>(options::FORMAT) {
         (
             match format_.as_str() {
@@ -492,7 +493,7 @@ fn extract_format(options: &clap::ArgMatches) -> (Format, Option<&'static str>) 
 /// # Returns
 ///
 /// A Files variant representing the type of files to display.
-fn extract_files(options: &clap::ArgMatches) -> Files {
+fn extract_files(options: &ArgMatches) -> Files {
     if options.get_flag(options::files::ALL) {
         Files::All
     } else if options.get_flag(options::files::ALMOST_ALL) {
@@ -507,7 +508,7 @@ fn extract_files(options: &clap::ArgMatches) -> Files {
 /// # Returns
 ///
 /// A Sort variant representing the sorting method to use.
-fn extract_sort(options: &clap::ArgMatches) -> Sort {
+fn extract_sort(options: &ArgMatches) -> Sort {
     if let Some(field) = options.get_one::<String>(options::SORT) {
         match field.as_str() {
             "none" => Sort::None,
@@ -540,7 +541,7 @@ fn extract_sort(options: &clap::ArgMatches) -> Sort {
 /// # Returns
 ///
 /// A Time variant representing the time to use.
-fn extract_time(options: &clap::ArgMatches) -> Time {
+fn extract_time(options: &ArgMatches) -> Time {
     if let Some(field) = options.get_one::<String>(options::TIME) {
         match field.as_str() {
             "ctime" | "status" => Time::Change,
@@ -590,7 +591,7 @@ fn is_color_compatible_term() -> bool {
 /// # Returns
 ///
 /// A boolean representing whether or not to use color.
-fn extract_color(options: &clap::ArgMatches) -> bool {
+fn extract_color(options: &ArgMatches) -> bool {
     if !is_color_compatible_term() {
         return false;
     }
@@ -610,7 +611,7 @@ fn extract_color(options: &clap::ArgMatches) -> bool {
 /// # Returns
 ///
 /// A boolean representing whether to hyperlink files.
-fn extract_hyperlink(options: &clap::ArgMatches) -> bool {
+fn extract_hyperlink(options: &ArgMatches) -> bool {
     let hyperlink = options
         .get_one::<String>(options::HYPERLINK)
         .unwrap()
@@ -673,13 +674,13 @@ fn match_quoting_style_name(style: &str, show_control: bool) -> Option<QuotingSt
 ///
 /// # Arguments
 ///
-/// * `options` - A reference to a clap::ArgMatches object containing command line arguments.
+/// * `options` - A reference to a ArgMatches object containing command line arguments.
 /// * `show_control` - A boolean value representing whether or not to show control characters.
 ///
 /// # Returns
 ///
 /// A QuotingStyle variant representing the quoting style to use.
-fn extract_quoting_style(options: &clap::ArgMatches, show_control: bool) -> QuotingStyle {
+fn extract_quoting_style(options: &ArgMatches, show_control: bool) -> QuotingStyle {
     let opt_quoting_style = options.get_one::<String>(options::QUOTING_STYLE);
 
     if let Some(style) = opt_quoting_style {
@@ -731,7 +732,7 @@ fn extract_quoting_style(options: &clap::ArgMatches, show_control: bool) -> Quot
 /// # Returns
 ///
 /// An IndicatorStyle variant representing the indicator style to use.
-fn extract_indicator_style(options: &clap::ArgMatches) -> IndicatorStyle {
+fn extract_indicator_style(options: &ArgMatches) -> IndicatorStyle {
     if let Some(field) = options.get_one::<String>(options::INDICATOR_STYLE) {
         match field.as_str() {
             "none" => IndicatorStyle::None,
@@ -778,7 +779,7 @@ fn parse_width(s: &str) -> Result<u16, LsError> {
 }
 impl Config {
     #[allow(clippy::cognitive_complexity)]
-    pub fn from(options: &clap::ArgMatches) -> UResult<Self> {
+    pub fn from(options: &ArgMatches) -> UResult<Self> {
         let context = options.get_flag(options::CONTEXT);
         let (mut format, opt) = extract_format(options);
         let files = extract_files(options);
@@ -810,7 +811,7 @@ impl Config {
             ]
             .iter()
             .flat_map(|opt| {
-                if options.value_source(opt) == Some(clap::parser::ValueSource::CommandLine) {
+                if options.value_source(opt) == Some(ValueSource::CommandLine) {
                     options.indices_of(opt)
                 } else {
                     None
@@ -821,8 +822,7 @@ impl Config {
             {
                 format = Format::Long;
             } else if let Some(mut indices) = options.indices_of(options::format::ONE_LINE) {
-                if options.value_source(options::format::ONE_LINE)
-                    == Some(clap::parser::ValueSource::CommandLine)
+                if options.value_source(options::format::ONE_LINE) == Some(ValueSource::CommandLine)
                     && indices.any(|i| i > idx)
                 {
                     format = Format::OneLine;
@@ -1036,7 +1036,7 @@ impl Config {
             options::quoting::LITERAL,
         ];
         let get_last = |flag: &str| -> usize {
-            if options.value_source(flag) == Some(clap::parser::ValueSource::CommandLine) {
+            if options.value_source(flag) == Some(ValueSource::CommandLine) {
                 options.index_of(flag).unwrap_or(0)
             } else {
                 0
@@ -1165,7 +1165,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
             return Err(e.into());
         }
         // Errors in argument *values* cause exit code 1:
-        Err(e) if e.kind() == clap::error::ErrorKind::InvalidValue => {
+        Err(e) if e.kind() == ClapErrorKind::InvalidValue => {
             return Err(USimpleError::new(1, e.to_string()));
         }
         // All other argument parsing errors cause exit code 2:
@@ -1862,7 +1862,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::PATHS)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .value_parser(ValueParser::os_string()),
         )
         .after_help(AFTER_HELP)

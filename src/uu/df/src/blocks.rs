@@ -4,8 +4,8 @@
 // file that was distributed with this source code.
 //! Types for representing and displaying block sizes.
 use crate::{OPT_BLOCKSIZE, OPT_PORTABILITY};
-use clap::ArgMatches;
 use std::{env, fmt};
+use uucore::deps::clap::ArgMatches;
 
 use uucore::{
     display::Quotable,

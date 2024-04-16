@@ -12,7 +12,7 @@ use uucore::{format_usage, help_about, help_usage};
 
 use uucore::error::{FromIo, UResult, USimpleError};
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 
 use std::fs;
 use std::os::unix::fs::MetadataExt;
@@ -156,7 +156,7 @@ pub fn uu_app() -> Command {
                 .long(options::REFERENCE)
                 .help("use RFILE's owner and group rather than specifying OWNER:GROUP values")
                 .value_name("RFILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .num_args(1..),
         )
         .arg(

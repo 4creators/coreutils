@@ -6,8 +6,8 @@
 //! based on the command line options
 
 use crate::{OPT_BYTES, OPT_LINES, OPT_LINE_BYTES, OPT_NUMBER};
-use clap::{parser::ValueSource, ArgMatches};
 use std::fmt;
+use uucore::deps::clap::{parser::ValueSource, ArgMatches};
 use uucore::{
     display::Quotable,
     parse_size::{parse_size_u64, parse_size_u64_max, ParseSizeError},

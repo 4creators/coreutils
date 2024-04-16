@@ -3,10 +3,12 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::{builder::PossibleValue, crate_version, Arg, ArgAction, Command};
 use std::fs::OpenOptions;
 use std::io::{copy, stdin, stdout, Error, ErrorKind, Read, Result, Write};
 use std::path::PathBuf;
+use uucore::deps::clap::{
+    builder::PossibleValue, crate_version, Arg, ArgAction, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::UResult;
 use uucore::{format_usage, help_about, help_section, help_usage, show_error};
@@ -106,7 +108,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::IGNORE_PIPE_ERRORS)

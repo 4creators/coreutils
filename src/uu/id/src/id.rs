@@ -33,8 +33,8 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::ffi::CStr;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::entries::{self, Group, Locate, Passwd};
 use uucore::error::UResult;
@@ -430,7 +430,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::ARG_USERS)
                 .action(ArgAction::Append)
                 .value_name(options::ARG_USERS)
-                .value_hint(clap::ValueHint::Username),
+                .value_hint(ValueHint::Username),
         )
 }
 

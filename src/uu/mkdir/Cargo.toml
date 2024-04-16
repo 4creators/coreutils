@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/mkdir.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["fs", "mode"] }
 
 [[bin]]

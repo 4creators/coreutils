@@ -16,7 +16,6 @@ path = "src/sort.rs"
 
 [dependencies]
 binary-heap-plus = { workspace = true }
-clap = { workspace = true }
 compare = { workspace = true }
 ctrlc = { workspace = true }
 fnv = { workspace = true }

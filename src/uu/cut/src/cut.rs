@@ -6,13 +6,15 @@
 // spell-checker:ignore (ToDO) delim sourcefiles
 
 use bstr::io::BufReadExt;
-use clap::{builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::ffi::OsString;
 use std::fs::File;
 use std::io::{stdin, stdout, BufReader, BufWriter, IsTerminal, Read, Write};
 #[cfg(unix)]
 use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, FromIo, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
@@ -635,6 +637,6 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
             .hide(true)
             .action(ArgAction::Append)
-            .value_hint(clap::ValueHint::FilePath)
+            .value_hint(ValueHint::FilePath)
         )
 }

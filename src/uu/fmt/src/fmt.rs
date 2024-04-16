@@ -5,9 +5,11 @@
 
 // spell-checker:ignore (ToDO) PSKIP linebreak ostream parasplit tabwidth xanti xprefix
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::fs::File;
 use std::io::{stdin, stdout, BufReader, BufWriter, Read, Stdout, Write};
+use uucore::deps::clap::{
+    crate_version, value_parser, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::{format_usage, help_about, help_usage};
@@ -406,7 +408,7 @@ pub fn uu_app() -> Command {
                 .long("width")
                 .help("Fill output lines up to a maximum of WIDTH columns, default 75. This can be specified as a negative number in the first argument.")
                 .value_name("WIDTH")
-                .value_parser(clap::value_parser!(usize)),
+                .value_parser(value_parser!(usize)),
         )
         .arg(
             Arg::new(options::GOAL)
@@ -414,7 +416,7 @@ pub fn uu_app() -> Command {
                 .long("goal")
                 .help("Goal width, default of 93% of WIDTH. Must be less than or equal to WIDTH.")
                 .value_name("GOAL")
-                .value_parser(clap::value_parser!(usize)),
+                .value_parser(value_parser!(usize)),
         )
         .arg(
             Arg::new(options::QUICK)
@@ -441,7 +443,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILES_OR_WIDTH)
                 .action(ArgAction::Append)
                 .value_name("FILES")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .allow_negative_numbers(true),
         )
 }

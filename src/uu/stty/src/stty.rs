@@ -7,7 +7,6 @@
 
 mod flags;
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use nix::libc::{c_ushort, O_NONBLOCK, TIOCGWINSZ, TIOCSWINSZ};
 use nix::sys::termios::{
     cfgetospeed, cfsetospeed, tcgetattr, tcsetattr, ControlFlags, InputFlags, LocalFlags,
@@ -20,6 +19,7 @@ use std::ops::ControlFlow;
 use std::os::fd::{AsFd, BorrowedFd};
 use std::os::unix::fs::OpenOptionsExt;
 use std::os::unix::io::{AsRawFd, RawFd};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::error::{UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage};
 
@@ -485,7 +485,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .short('F')
                 .long(options::FILE)
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .value_name("DEVICE")
                 .help("open and use the specified DEVICE instead of stdin"),
         )

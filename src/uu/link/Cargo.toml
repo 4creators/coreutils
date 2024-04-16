@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/link.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true }
 
 [[bin]]

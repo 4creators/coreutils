@@ -19,7 +19,6 @@ edition = "2021"
 path = "src/cp.rs"
 
 [dependencies]
-clap = { workspace = true }
 filetime = { workspace = true }
 libc = { workspace = true }
 quick-error = { workspace = true }

@@ -5,12 +5,13 @@
 
 // spell-checker:ignore (ToDO) retcode
 
-use clap::{
-    builder::NonEmptyStringValueParser, crate_version, Arg, ArgAction, ArgMatches, Command,
-};
 use std::{
     io::{stdout, Write},
     path::{Path, PathBuf},
+};
+use uucore::deps::clap::{
+    builder::NonEmptyStringValueParser, crate_version, Arg, ArgAction, ArgMatches, Command,
+    ValueHint,
 };
 use uucore::fs::make_path_relative_to;
 use uucore::{
@@ -170,7 +171,7 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .required(true)
                 .value_parser(NonEmptyStringValueParser::new())
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

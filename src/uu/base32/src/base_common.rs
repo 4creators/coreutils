@@ -14,7 +14,7 @@ use std::fs::File;
 use std::io::{BufReader, Stdin};
 use std::path::Path;
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 
 pub static BASE_CMD_PARSE_ERROR: i32 = 1;
 
@@ -34,7 +34,7 @@ pub mod options {
 }
 
 impl Config {
-    pub fn from(options: &clap::ArgMatches) -> UResult<Self> {
+    pub fn from(options: &ArgMatches) -> UResult<Self> {
         let file: Option<String> = match options.get_many::<String>(options::FILE) {
             Some(mut values) => {
                 let name = values.next().unwrap();
@@ -126,8 +126,8 @@ pub fn base_app(about: &'static str, usage: &str) -> Command {
         .arg(
             Arg::new(options::FILE)
                 .index(1)
-                .action(clap::ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .action(ArgAction::Append)
+                .value_hint(ValueHint::FilePath),
         )
 }
 

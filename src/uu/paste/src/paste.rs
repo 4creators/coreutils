@@ -5,10 +5,10 @@
 
 // spell-checker:ignore (ToDO) delim
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs::File;
 use std::io::{stdin, stdout, BufRead, BufReader, Read, Write};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
 use uucore::{format_usage, help_about, help_usage};
@@ -78,7 +78,7 @@ pub fn uu_app() -> Command {
                 .value_name("FILE")
                 .action(ArgAction::Append)
                 .default_value("-")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::ZERO_TERMINATED)

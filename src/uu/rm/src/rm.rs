@@ -5,13 +5,15 @@
 
 // spell-checker:ignore (path) eacces inacc
 
-use clap::{builder::ValueParser, crate_version, parser::ValueSource, Arg, ArgAction, Command};
 use std::collections::VecDeque;
 use std::ffi::{OsStr, OsString};
 use std::fs::{self, File, Metadata};
 use std::io::ErrorKind;
 use std::ops::BitOr;
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, parser::ValueSource, Arg, ArgAction, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError, UUsageError};
 use uucore::{format_usage, help_about, help_section, help_usage, prompt_yes, show_error};
@@ -274,7 +276,7 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
                 .num_args(1..)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

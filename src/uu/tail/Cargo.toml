@@ -16,7 +16,6 @@ edition = "2021"
 path = "src/tail.rs"
 
 [dependencies]
-clap = { workspace = true }
 libc = { workspace = true }
 memchr = { workspace = true }
 notify = { workspace = true }

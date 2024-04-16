@@ -9,7 +9,6 @@ mod filesystem;
 mod table;
 
 use blocks::HumanReadable;
-use clap::builder::ValueParser;
 use table::HeaderMode;
 use uucore::display::Quotable;
 use uucore::error::FromIo;
@@ -18,7 +17,10 @@ use uucore::fsext::{read_fs_list, MountInfo};
 use uucore::parse_size::ParseSizeError;
 use uucore::{format_usage, help_about, help_section, help_usage, show};
 
-use clap::{crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command,
+    ValueHint,
+};
 
 use std::error::Error;
 use std::ffi::OsString;
@@ -620,7 +622,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(OPT_PATHS)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

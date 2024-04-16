@@ -7,9 +7,9 @@ use crate::errors::*;
 use crate::format::format_and_print;
 use crate::options::*;
 use crate::units::{Result, Unit};
-use clap::{crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command};
 use std::io::{BufRead, Write};
 use std::str::FromStr;
+use uucore::deps::clap::{crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command};
 
 use units::{IEC_BASES, SI_BASES};
 use uucore::display::Quotable;

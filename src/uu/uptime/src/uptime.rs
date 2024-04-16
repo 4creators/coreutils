@@ -3,7 +3,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 
 use uucore::{format_usage, help_about, help_usage};
 

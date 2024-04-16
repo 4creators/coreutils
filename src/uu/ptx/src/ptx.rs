@@ -5,8 +5,6 @@
 
 // spell-checker:ignore (ToDOs) corasick memchr Roff trunc oset iset CHARCLASS
 
-use clap::{crate_version, Arg, ArgAction, Command};
-use regex::Regex;
 use std::cmp;
 use std::collections::{BTreeSet, HashMap, HashSet};
 use std::error::Error;
@@ -14,6 +12,8 @@ use std::fmt::{Display, Formatter, Write as FmtWrite};
 use std::fs::File;
 use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Read, Write};
 use std::num::ParseIntError;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
+use uucore::deps::regex::Regex;
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UError, UResult};
 use uucore::{format_usage, help_about, help_usage};
@@ -63,10 +63,7 @@ impl Default for Config {
     }
 }
 
-fn read_word_filter_file(
-    matches: &clap::ArgMatches,
-    option: &str,
-) -> std::io::Result<HashSet<String>> {
+fn read_word_filter_file(matches: &ArgMatches, option: &str) -> std::io::Result<HashSet<String>> {
     let filename = matches
         .get_one::<String>(option)
         .expect("parsing options failed!")
@@ -81,10 +78,7 @@ fn read_word_filter_file(
 }
 
 /// reads contents of file as unique set of characters to be used with the break-file option
-fn read_char_filter_file(
-    matches: &clap::ArgMatches,
-    option: &str,
-) -> std::io::Result<HashSet<char>> {
+fn read_char_filter_file(matches: &ArgMatches, option: &str) -> std::io::Result<HashSet<char>> {
     let filename = matches
         .get_one::<String>(option)
         .expect("parsing options failed!");
@@ -105,7 +99,7 @@ struct WordFilter {
 
 impl WordFilter {
     #[allow(clippy::cognitive_complexity)]
-    fn new(matches: &clap::ArgMatches, config: &Config) -> UResult<Self> {
+    fn new(matches: &ArgMatches, config: &Config) -> UResult<Self> {
         let (o, oset): (bool, HashSet<String>) = if matches.contains_id(options::ONLY_FILE) {
             let words =
                 read_word_filter_file(matches, options::ONLY_FILE).map_err_context(String::new)?;
@@ -217,7 +211,7 @@ impl Display for PtxError {
     }
 }
 
-fn get_config(matches: &clap::ArgMatches) -> UResult<Config> {
+fn get_config(matches: &ArgMatches) -> UResult<Config> {
     let mut config = Config::default();
     let err_msg = "parsing options failed";
     if matches.get_flag(options::TRADITIONAL) {
@@ -743,7 +737,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::AUTO_REFERENCE)
@@ -814,7 +808,7 @@ pub fn uu_app() -> Command {
                 .long(options::BREAK_FILE)
                 .help("word break characters in this FILE")
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::IGNORE_CASE)
@@ -836,7 +830,7 @@ pub fn uu_app() -> Command {
                 .long(options::IGNORE_FILE)
                 .help("read ignore word list from FILE")
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::ONLY_FILE)
@@ -844,7 +838,7 @@ pub fn uu_app() -> Command {
                 .long(options::ONLY_FILE)
                 .help("read only word list from this FILE")
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::REFERENCES)

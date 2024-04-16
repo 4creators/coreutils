@@ -12,7 +12,6 @@ mod strategy;
 
 use crate::filenames::{FilenameIterator, Suffix, SuffixError};
 use crate::strategy::{NumberType, Strategy, StrategyError};
-use clap::{crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use std::env;
 use std::ffi::OsString;
 use std::fmt;
@@ -21,6 +20,9 @@ use std::io;
 use std::io::{stdin, BufRead, BufReader, BufWriter, ErrorKind, Read, Seek, SeekFrom, Write};
 use std::path::Path;
 use std::u64;
+use uucore::deps::clap::{
+    crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UIoError, UResult, USimpleError, UUsageError};
 use uucore::parse_size::parse_size_u64;

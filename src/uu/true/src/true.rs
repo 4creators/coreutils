@@ -2,8 +2,8 @@
 //
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
-use clap::{Arg, ArgAction, Command};
 use std::{ffi::OsString, io::Write};
+use uucore::deps::clap::{crate_version, error::ErrorKind, Arg, ArgAction, Command};
 use uucore::error::{set_exit_code, UResult};
 use uucore::help_about;
 
@@ -20,8 +20,8 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
 
     if let Err(e) = command.try_get_matches_from_mut(args) {
         let error = match e.kind() {
-            clap::error::ErrorKind::DisplayHelp => command.print_help(),
-            clap::error::ErrorKind::DisplayVersion => {
+            ErrorKind::DisplayHelp => command.print_help(),
+            ErrorKind::DisplayVersion => {
                 writeln!(std::io::stdout(), "{}", command.render_version())
             }
             _ => Ok(()),
@@ -42,7 +42,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
 
 pub fn uu_app() -> Command {
     Command::new(uucore::util_name())
-        .version(clap::crate_version!())
+        .version(crate_version!())
         .about(ABOUT)
         // We provide our own help and version options, to ensure maximum compatibility with GNU.
         .disable_help_flag(true)

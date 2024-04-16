@@ -9,8 +9,9 @@ use std::net::ToSocketAddrs;
 use std::str;
 use std::{collections::hash_set::HashSet, ffi::OsString};
 
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 
 use uucore::{
     error::{FromIo, UResult},
@@ -110,7 +111,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(OPT_HOST)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::Hostname),
+                .value_hint(ValueHint::Hostname),
         )
 }
 

@@ -9,12 +9,12 @@ use chrono::format::{Item, StrftimeItems};
 use chrono::{DateTime, FixedOffset, Local, Offset, TimeDelta, Utc};
 #[cfg(windows)]
 use chrono::{Datelike, Timelike};
-use clap::{crate_version, Arg, ArgAction, Command};
 #[cfg(all(unix, not(target_os = "macos"), not(target_os = "redox")))]
 use libc::{clock_settime, timespec, CLOCK_REALTIME};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::FromIo;
 use uucore::error::{UResult, USimpleError};
@@ -327,7 +327,7 @@ pub fn uu_app() -> Command {
                 .short('f')
                 .long(OPT_FILE)
                 .value_name("DATEFILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .help("like --date; once for each line of DATEFILE"),
         )
         .arg(
@@ -367,7 +367,7 @@ pub fn uu_app() -> Command {
                 .short('r')
                 .long(OPT_REFERENCE)
                 .value_name("FILE")
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .help("display the last modification time of FILE"),
         )
         .arg(

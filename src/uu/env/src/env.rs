@@ -12,8 +12,6 @@ pub mod string_expander;
 pub mod string_parser;
 pub mod variable_parser;
 
-use clap::builder::ValueParser;
-use clap::{crate_name, crate_version, Arg, ArgAction, Command};
 use ini::Ini;
 use native_int_str::{
     from_native_int_representation_owned, Convert, NCvt, NativeIntStr, NativeIntString, NativeStr,
@@ -25,6 +23,10 @@ use std::env;
 use std::ffi::{OsStr, OsString};
 use std::io::{self, Write};
 use std::ops::Deref;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_name, crate_version, error::ErrorKind, Arg, ArgAction, ArgMatches,
+    Command, ValueHint,
+};
 
 #[cfg(unix)]
 use std::os::unix::process::{CommandExt, ExitStatusExt};
@@ -135,7 +137,7 @@ pub fn uu_app() -> Command {
                 .number_of_values(1)
                 .value_name("DIR")
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::DirPath)
+                .value_hint(ValueHint::DirPath)
                 .help("change working directory to DIR"),
         )
         .arg(
@@ -153,7 +155,7 @@ pub fn uu_app() -> Command {
                 .short('f')
                 .long("file")
                 .value_name("PATH")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .value_parser(ValueParser::os_string())
                 .action(ArgAction::Append)
                 .help(
@@ -312,7 +314,7 @@ impl EnvAppData {
     fn parse_arguments(
         &mut self,
         original_args: impl uucore::Args,
-    ) -> Result<(Vec<OsString>, clap::ArgMatches), Box<dyn UError>> {
+    ) -> Result<(Vec<OsString>, ArgMatches), Box<dyn UError>> {
         let original_args: Vec<OsString> = original_args.collect();
         let args = self.process_all_string_arguments(&original_args)?;
         let app = uu_app();
@@ -320,8 +322,7 @@ impl EnvAppData {
             .try_get_matches_from(args)
             .map_err(|e| -> Box<dyn UError> {
                 match e.kind() {
-                    clap::error::ErrorKind::DisplayHelp
-                    | clap::error::ErrorKind::DisplayVersion => e.into(),
+                    ErrorKind::DisplayHelp | ErrorKind::DisplayVersion => e.into(),
                     _ => {
                         // extent any real issue with parameter parsing by the ERROR_MSG_S_SHEBANG
                         let s = format!("{}", e);
@@ -479,7 +480,7 @@ fn apply_removal_of_all_env_vars(opts: &Options<'_>) {
     }
 }
 
-fn make_options(matches: &clap::ArgMatches) -> UResult<Options<'_>> {
+fn make_options(matches: &ArgMatches) -> UResult<Options<'_>> {
     let ignore_env = matches.get_flag("ignore-environment");
     let line_ending = LineEnding::from_zero_flag(matches.get_flag("null"));
     let running_directory = matches.get_one::<OsString>("chdir").map(|s| s.as_os_str());

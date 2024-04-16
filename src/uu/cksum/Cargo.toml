@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/cksum.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["encoding", "sum"] }
 hex = { workspace = true }
 

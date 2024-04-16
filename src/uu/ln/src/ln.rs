@@ -5,7 +5,7 @@
 
 // spell-checker:ignore (ToDO) srcpath targetpath EEXIST
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UError, UResult};
 use uucore::fs::{make_path_relative_to, paths_refer_to_same_file};
@@ -226,7 +226,7 @@ pub fn uu_app() -> Command {
                 .long(options::TARGET_DIRECTORY)
                 .help("specify the DIRECTORY in which to create the links")
                 .value_name("DIRECTORY")
-                .value_hint(clap::ValueHint::DirPath)
+                .value_hint(ValueHint::DirPath)
                 .conflicts_with(options::NO_TARGET_DIRECTORY),
         )
         .arg(
@@ -254,7 +254,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(ARG_FILES)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .required(true)
                 .num_args(1..),
         )

@@ -5,7 +5,6 @@
 
 // spell-checker:ignore manpages mangen
 
-use clap::{Arg, Command};
 use clap_complete::Shell;
 use std::cmp;
 use std::ffi::OsStr;
@@ -13,6 +12,7 @@ use std::ffi::OsString;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::process;
+use uucore::deps::clap::{builder::EnumValueParser, builder::PossibleValuesParser, Arg, Command};
 use uucore::display::Quotable;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -150,12 +150,12 @@ fn gen_completions<T: uucore::Args>(
         .about("Prints completions to stdout")
         .arg(
             Arg::new("utility")
-                .value_parser(clap::builder::PossibleValuesParser::new(all_utilities))
+                .value_parser(PossibleValuesParser::new(all_utilities))
                 .required(true),
         )
         .arg(
             Arg::new("shell")
-                .value_parser(clap::builder::EnumValueParser::<Shell>::new())
+                .value_parser(EnumValueParser::<Shell>::new())
                 .required(true),
         )
         .get_matches_from(std::iter::once(OsString::from("completion")).chain(args));
@@ -188,7 +188,7 @@ fn gen_manpage<T: uucore::Args>(
         .about("Prints manpage to stdout")
         .arg(
             Arg::new("utility")
-                .value_parser(clap::builder::PossibleValuesParser::new(all_utilities))
+                .value_parser(PossibleValuesParser::new(all_utilities))
                 .required(true),
         )
         .get_matches_from(std::iter::once(OsString::from("manpage")).chain(args));

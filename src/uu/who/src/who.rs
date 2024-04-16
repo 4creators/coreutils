@@ -5,7 +5,7 @@
 
 // spell-checker:ignore (ToDO) ttyname hostnames runlevel mesg wtmp statted boottime deadprocs initspawn clockchange curr runlvline pidstr exitstr hoststr
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::{format_usage, help_about, help_usage};
 
 mod platform;
@@ -146,6 +146,6 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .num_args(1..=2)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }

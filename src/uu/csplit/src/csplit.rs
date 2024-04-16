@@ -12,8 +12,8 @@ use std::{
     io::{BufRead, BufWriter, Write},
 };
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
-use regex::Regex;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
+use uucore::deps::regex::Regex;
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult};
 use uucore::{crash_if_err, format_usage, help_about, help_section, help_usage};
@@ -642,12 +642,12 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .hide(true)
                 .required(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::PATTERN)
                 .hide(true)
-                .action(clap::ArgAction::Append)
+                .action(ArgAction::Append)
                 .required(true),
         )
         .after_help(AFTER_HELP)

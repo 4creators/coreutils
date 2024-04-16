@@ -5,10 +5,10 @@
 
 // spell-checker:ignore (ToDO) sysv
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs::File;
 use std::io::{stdin, Read};
 use std::path::Path;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::{format_usage, help_about, help_usage, show};
@@ -147,7 +147,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILE)
                 .action(ArgAction::Append)
                 .hide(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::BSD_COMPATIBLE)

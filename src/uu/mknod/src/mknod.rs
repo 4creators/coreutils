@@ -5,10 +5,10 @@
 
 // spell-checker:ignore (ToDO) parsemode makedev sysmacros perror IFBLK IFCHR IFIFO
 
-use clap::{crate_version, value_parser, Arg, ArgMatches, Command};
 use libc::{dev_t, mode_t};
 use libc::{S_IFBLK, S_IFCHR, S_IFIFO, S_IRGRP, S_IROTH, S_IRUSR, S_IWGRP, S_IWOTH, S_IWUSR};
 use std::ffi::CString;
+use uucore::deps::clap::{crate_version, value_parser, Arg, ArgMatches, Command, ValueHint};
 
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, UResult, USimpleError, UUsageError};
@@ -135,7 +135,7 @@ pub fn uu_app() -> Command {
                 .value_name("NAME")
                 .help("name of the new file")
                 .required(true)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
         .arg(
             Arg::new("type")

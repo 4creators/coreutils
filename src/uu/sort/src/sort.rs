@@ -18,8 +18,6 @@ mod numeric_str_cmp;
 mod tmp_dir;
 
 use chunks::LineData;
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, ArgAction, Command};
 use custom_str_cmp::custom_str_cmp;
 use ext_sort::ext_sort;
 use fnv::FnvHasher;
@@ -39,6 +37,7 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::str::Utf8Error;
 use unicode_width::UnicodeWidthStr;
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, strip_errno, UError, UResult, USimpleError, UUsageError};
 use uucore::line_ending::LineEnding;
@@ -1415,7 +1414,7 @@ pub fn uu_app() -> Command {
                 .long(options::OUTPUT)
                 .help("write output to FILENAME instead of stdout")
                 .value_name("FILENAME")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::REVERSE)
@@ -1479,14 +1478,14 @@ pub fn uu_app() -> Command {
                 .long(options::TMP_DIR)
                 .help("use DIR for temporaries, not $TMPDIR or /tmp")
                 .value_name("DIR")
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
         .arg(
             Arg::new(options::COMPRESS_PROG)
                 .long(options::COMPRESS_PROG)
                 .help("compress temporary files with PROG, decompress with PROG -d; PROG has to take input from stdin and output to stdout")
                 .value_name("PROG")
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
         .arg(
             Arg::new(options::BATCH_SIZE)
@@ -1501,7 +1500,7 @@ pub fn uu_app() -> Command {
                 .value_name("NUL_FILES")
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::DEBUG)
@@ -1513,7 +1512,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILES)
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

@@ -25,7 +25,7 @@
 //! #[macro_use]
 //! extern crate uucore;
 //!
-//! use clap::{Command, Arg, ArgMatches};
+//! use uucore::deps::clap::{Command, Arg, ArgMatches};
 //! use uucore::update_control::{self, UpdateMode};
 //!
 //! fn main() {
@@ -106,7 +106,7 @@ pub mod arguments {
 /// #[macro_use]
 /// extern crate uucore;
 /// use uucore::update_control::{self, UpdateMode};
-/// use clap::{Command, Arg, ArgMatches};
+/// use uucore::deps::clap::{Command, Arg, ArgMatches};
 ///
 /// fn main() {
 ///     let matches = Command::new("command")

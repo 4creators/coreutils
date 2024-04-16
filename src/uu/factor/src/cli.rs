@@ -7,8 +7,8 @@ use std::io::BufRead;
 use std::io::{self, stdin, stdout, Write};
 
 mod factor;
-use clap::{crate_version, Arg, ArgAction, Command};
 pub use factor::*;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, FromIo, UResult};
 use uucore::{format_usage, help_about, help_usage, show_error, show_warning};

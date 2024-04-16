@@ -5,8 +5,8 @@
 
 use std::fmt::Display;
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use syntax_tree::AstNode;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::{
     display::Quotable,
     error::{UError, UResult},

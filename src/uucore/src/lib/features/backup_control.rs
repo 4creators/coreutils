@@ -38,7 +38,7 @@
 //! #[macro_use]
 //! extern crate uucore;
 //!
-//! use clap::{Command, Arg, ArgMatches};
+//! use uucore::deps::clap::{Command, Arg, ArgMatches};
 //! use std::path::{Path, PathBuf};
 //! use uucore::backup_control::{self, BackupMode};
 //! use uucore::error::{UError, UResult};
@@ -294,7 +294,7 @@ pub fn determine_backup_suffix(matches: &ArgMatches) -> String {
 /// #[macro_use]
 /// extern crate uucore;
 /// use uucore::backup_control::{self, BackupMode};
-/// use clap::{Command, Arg, ArgMatches};
+/// use uucore::deps::clap::{Command, Arg, ArgMatches};
 ///
 /// fn main() {
 ///     let matches = Command::new("command")
@@ -317,7 +317,7 @@ pub fn determine_backup_suffix(matches: &ArgMatches) -> String {
 /// #[macro_use]
 /// extern crate uucore;
 /// use uucore::backup_control::{self, BackupMode, BackupError};
-/// use clap::{Command, Arg, ArgMatches};
+/// use uucore::deps::clap::{Command, Arg, ArgMatches};
 ///
 /// fn main() {
 ///     let matches = Command::new("command")

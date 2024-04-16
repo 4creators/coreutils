@@ -4,11 +4,12 @@
 // file that was distributed with this source code.
 // spell-checker:ignore (vars) RFILE
 
-use clap::builder::ValueParser;
 use uucore::error::{UResult, UUsageError};
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use selinux::{OpaqueSecurityContext, SecurityClass, SecurityContext};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, Command, ErrorKind, ValueHint,
+};
 use uucore::{format_usage, help_about, help_section, help_usage};
 
 use std::borrow::Cow;
@@ -44,8 +45,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         Err(r) => {
             if let Error::CommandLine(ref r) = r {
                 match r.kind() {
-                    clap::error::ErrorKind::DisplayHelp
-                    | clap::error::ErrorKind::DisplayVersion => {
+                    ErrorKind::DisplayHelp | ErrorKind::DisplayVersion => {
                         println!("{r}");
                         return Ok(());
                     }
@@ -149,7 +149,7 @@ pub fn uu_app() -> Command {
             Arg::new("ARG")
                 .action(ArgAction::Append)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
         // Once "ARG" is parsed, everything after that belongs to it.
         //

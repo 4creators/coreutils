@@ -5,7 +5,7 @@
 
 use platform_info::*;
 
-use clap::{crate_version, Command};
+use uucore::deps::clap::{crate_version, Command};
 use uucore::error::{UResult, USimpleError};
 use uucore::{help_about, help_section};
 

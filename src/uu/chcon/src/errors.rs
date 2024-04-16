@@ -25,7 +25,7 @@ pub(crate) enum Error {
     ArgumentsMismatch(String),
 
     #[error(transparent)]
-    CommandLine(#[from] clap::Error),
+    CommandLine(#[from] Error),
 
     #[error("{operation} failed")]
     SELinux {

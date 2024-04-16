@@ -21,7 +21,7 @@ use uucore::{
     format_usage, help_about, help_usage, show,
 };
 
-use clap::{crate_version, Arg, ArgAction, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 
 mod options {
     pub const USERS: &str = "USERNAME";
@@ -104,6 +104,6 @@ pub fn uu_app() -> Command {
             Arg::new(options::USERS)
                 .action(ArgAction::Append)
                 .value_name(options::USERS)
-                .value_hint(clap::ValueHint::Username),
+                .value_hint(ValueHint::Username),
         )
 }

@@ -5,11 +5,12 @@
 
 // spell-checker:ignore (ToDO) ugoa cmode
 
-use clap::builder::ValueParser;
-use clap::parser::ValuesRef;
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, parser::ValuesRef, Arg, ArgAction, ArgMatches, Command,
+    ValueHint,
+};
 #[cfg(not(windows))]
 use uucore::error::FromIo;
 use uucore::error::{UResult, USimpleError};
@@ -128,7 +129,7 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .num_args(1..)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
 }
 

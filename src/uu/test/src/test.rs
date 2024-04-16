@@ -8,13 +8,13 @@
 pub(crate) mod error;
 mod parser;
 
-use clap::{crate_version, Command};
 use error::{ParseError, ParseResult};
 use parser::{parse, Operator, Symbol, UnaryOperator};
 use std::ffi::{OsStr, OsString};
 use std::fs;
 #[cfg(unix)]
 use std::os::unix::fs::MetadataExt;
+use uucore::deps::clap::{crate_version, Command};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError};
 #[cfg(not(windows))]

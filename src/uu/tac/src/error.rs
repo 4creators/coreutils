@@ -6,13 +6,14 @@
 use std::error::Error;
 use std::fmt::Display;
 
+use uucore::deps::regex::Error as RegexError;
 use uucore::display::Quotable;
 use uucore::error::UError;
 
 #[derive(Debug)]
 pub enum TacError {
     /// A regular expression given by the user is invalid.
-    InvalidRegex(regex::Error),
+    InvalidRegex(RegexError),
 
     /// An argument to tac is invalid.
     InvalidArgument(String),

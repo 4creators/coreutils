@@ -5,8 +5,6 @@
 
 // spell-checker:ignore (ToDO) autoformat FILENUM whitespaces pairable unpairable nocheck
 
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, ArgAction, Command};
 use memchr::{memchr3_iter, memchr_iter};
 use std::cmp::Ordering;
 use std::error::Error;
@@ -17,6 +15,9 @@ use std::io::{stdin, stdout, BufRead, BufReader, BufWriter, Split, Stdin, Write}
 use std::num::IntErrorKind;
 #[cfg(unix)]
 use std::os::unix::ffi::OsStrExt;
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, FromIo, UError, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
@@ -602,7 +603,7 @@ fn parse_separator(value_os: &OsString) -> UResult<Sep> {
     }
 }
 
-fn parse_print_settings(matches: &clap::ArgMatches) -> UResult<(bool, bool, bool)> {
+fn parse_print_settings(matches: &ArgMatches) -> UResult<(bool, bool, bool)> {
     let mut print_joined = true;
     let mut print_unpaired1 = false;
     let mut print_unpaired2 = false;
@@ -625,7 +626,7 @@ fn parse_print_settings(matches: &clap::ArgMatches) -> UResult<(bool, bool, bool
     Ok((print_joined, print_unpaired1, print_unpaired2))
 }
 
-fn get_and_parse_field_number(matches: &clap::ArgMatches, key: &str) -> UResult<Option<usize>> {
+fn get_and_parse_field_number(matches: &ArgMatches, key: &str) -> UResult<Option<usize>> {
     let value = matches.get_one::<String>(key).map(|s| s.as_str());
     parse_field_number_option(value)
 }
@@ -635,7 +636,7 @@ fn get_and_parse_field_number(matches: &clap::ArgMatches, key: &str) -> UResult<
 /// This function takes the matches from the command-line arguments, processes them,
 /// and returns a `Settings` struct that encapsulates the configuration for the program.
 #[allow(clippy::field_reassign_with_default)]
-fn parse_settings(matches: &clap::ArgMatches) -> UResult<Settings> {
+fn parse_settings(matches: &ArgMatches) -> UResult<Settings> {
     let keys = get_and_parse_field_number(matches, "j")?;
     let key1 = get_and_parse_field_number(matches, "1")?;
     let key2 = get_and_parse_field_number(matches, "2")?;
@@ -809,14 +810,14 @@ FILENUM is 1 or 2, corresponding to FILE1 or FILE2",
             Arg::new("file1")
                 .required(true)
                 .value_name("FILE1")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .hide(true),
         )
         .arg(
             Arg::new("file2")
                 .required(true)
                 .value_name("FILE2")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .hide(true),
         )
 }

@@ -5,7 +5,7 @@
 // spell-checker:ignore (regex) SKIPTO UPTO ; (vars) ntimes
 
 use crate::csplit_error::CsplitError;
-use regex::Regex;
+use uucore::deps::regex::Regex;
 use uucore::show_warning;
 
 /// The definition of a pattern to match on a line.

@@ -7,8 +7,7 @@ use std::ffi::OsString;
 use std::fs::remove_file;
 use std::path::Path;
 
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, Command};
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, Command, ValueHint};
 
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult};
@@ -38,6 +37,6 @@ pub fn uu_app() -> Command {
                 .required(true)
                 .hide(true)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }

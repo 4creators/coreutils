@@ -7,7 +7,6 @@
 
 mod mode;
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
 use file_diff::diff;
 use filetime::{set_file_times, FileTime};
 use std::error::Error;
@@ -20,6 +19,7 @@ use std::os::unix::prelude::OsStrExt;
 use std::path::{Path, PathBuf, MAIN_SEPARATOR};
 use std::process;
 use uucore::backup_control::{self, BackupMode};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::entries::{grp2gid, usr2uid};
 use uucore::error::{FromIo, UError, UIoError, UResult, UUsageError};
@@ -253,7 +253,7 @@ pub fn uu_app() -> Command {
                 .long(OPT_OWNER)
                 .help("set ownership (super-user only)")
                 .value_name("OWNER")
-                .value_hint(clap::ValueHint::Username),
+                .value_hint(ValueHint::Username),
         )
         .arg(
             Arg::new(OPT_PRESERVE_TIMESTAMPS)
@@ -277,7 +277,7 @@ pub fn uu_app() -> Command {
                 .long(OPT_STRIP_PROGRAM)
                 .help("program used to strip binaries (no action Windows)")
                 .value_name("PROGRAM")
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
         .arg(backup_control::arguments::suffix())
         .arg(
@@ -287,7 +287,7 @@ pub fn uu_app() -> Command {
                 .long(OPT_TARGET_DIRECTORY)
                 .help("move all SOURCE arguments into DIRECTORY")
                 .value_name("DIRECTORY")
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
         .arg(
             // TODO implement flag
@@ -325,7 +325,7 @@ pub fn uu_app() -> Command {
             Arg::new(ARG_FILES)
                 .action(ArgAction::Append)
                 .num_args(1..)
-                .value_hint(clap::ValueHint::AnyPath),
+                .value_hint(ValueHint::AnyPath),
         )
 }
 

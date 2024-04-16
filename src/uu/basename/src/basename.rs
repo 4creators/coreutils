@@ -5,8 +5,8 @@
 
 // spell-checker:ignore (ToDO) fullname
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::path::{is_separator, PathBuf};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{UResult, UUsageError};
 use uucore::line_ending::LineEnding;
@@ -90,8 +90,8 @@ pub fn uu_app() -> Command {
         )
         .arg(
             Arg::new(options::NAME)
-                .action(clap::ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath)
+                .action(ArgAction::Append)
+                .value_hint(ValueHint::AnyPath)
                 .hide(true)
                 .trailing_var_arg(true),
         )

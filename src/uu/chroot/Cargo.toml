@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/chroot.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["entries", "fs"] }
 
 [[bin]]

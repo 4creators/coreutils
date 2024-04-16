@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/env.rs"
 
 [dependencies]
-clap = { workspace = true }
 rust-ini = { workspace = true }
 uucore = { workspace = true, features = ["signals"] }
 

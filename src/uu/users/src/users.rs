@@ -5,8 +5,7 @@
 
 // spell-checker:ignore (paths) wtmp
 
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, Command};
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, Command, ValueHint};
 use uucore::{format_usage, help_about, help_usage};
 
 mod platform;
@@ -28,7 +27,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(ARG_FILES)
                 .num_args(1)
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .value_parser(ValueParser::os_string()),
         )
 }

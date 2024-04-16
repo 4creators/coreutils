@@ -16,7 +16,6 @@ path = "src/uname.rs"
 
 [dependencies]
 platform-info = { workspace = true }
-clap = { workspace = true }
 uucore = { workspace = true }
 
 [[bin]]

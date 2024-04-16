@@ -5,7 +5,6 @@
 
 // spell-checker:ignore (ToDO) execvp SIGHUP cproc vprocmgr cstrs homeout
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use libc::{c_char, dup2, execvp, signal};
 use libc::{SIGHUP, SIG_IGN};
 use std::env;
@@ -15,6 +14,7 @@ use std::fs::{File, OpenOptions};
 use std::io::{Error, IsTerminal};
 use std::os::unix::prelude::*;
 use std::path::{Path, PathBuf};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, UClapError, UError, UResult};
 use uucore::{format_usage, help_about, help_section, help_usage, show_error};
@@ -111,7 +111,7 @@ pub fn uu_app() -> Command {
                 .hide(true)
                 .required(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::CommandName),
+                .value_hint(ValueHint::CommandName),
         )
         .trailing_var_arg(true)
         .infer_long_args(true)

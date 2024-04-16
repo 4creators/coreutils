@@ -5,12 +5,11 @@
 
 // spell-checker:ignore (ToDO) ENOTDIR
 
-use clap::builder::ValueParser;
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::ffi::OsString;
 use std::fs::{read_dir, remove_dir};
 use std::io;
 use std::path::Path;
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::{set_exit_code, strip_errno, UResult};
 
@@ -196,6 +195,6 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .num_args(1..)
                 .value_parser(ValueParser::os_string())
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
 }

@@ -14,7 +14,6 @@ edition = "2021"
 path = "src/chcon.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["entries", "fs", "perms"] }
 selinux = { workspace = true }
 thiserror = { workspace = true }

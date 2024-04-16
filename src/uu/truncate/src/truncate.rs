@@ -4,12 +4,14 @@
 // file that was distributed with this source code.
 
 // spell-checker:ignore (ToDO) RFILE refsize rfilename fsize tsize
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs::{metadata, OpenOptions};
 use std::io::ErrorKind;
 #[cfg(unix)]
 use std::os::unix::fs::FileTypeExt;
 use std::path::Path;
+use uucore::deps::clap::{
+    crate_version, error::ErrorKind as ClapErrorKind, Arg, ArgAction, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{FromIo, UResult, USimpleError, UUsageError};
 use uucore::parse_size::{parse_size_u64, ParseSizeError};
@@ -91,7 +93,7 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         .map_err(|e| {
             e.print().expect("Error writing clap::Error");
             match e.kind() {
-                clap::error::ErrorKind::DisplayHelp | clap::error::ErrorKind::DisplayVersion => 0,
+                ClapErrorKind::DisplayHelp | ClapErrorKind::DisplayVersion => 0,
                 _ => 1,
             }
         })?;
@@ -144,7 +146,7 @@ pub fn uu_app() -> Command {
                 .required_unless_present(options::SIZE)
                 .help("base the size of each file on the size of RFILE")
                 .value_name("RFILE")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::SIZE)
@@ -162,7 +164,7 @@ pub fn uu_app() -> Command {
                 .value_name("FILE")
                 .action(ArgAction::Append)
                 .required(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

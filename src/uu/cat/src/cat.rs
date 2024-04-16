@@ -4,10 +4,10 @@
 // file that was distributed with this source code.
 
 // spell-checker:ignore (ToDO) nonprint nonblank nonprinting ELOOP
-use clap::{crate_version, Arg, ArgAction, Command};
 use std::fs::{metadata, File};
 use std::io::{self, IsTerminal, Read, Write};
 use thiserror::Error;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command, ValueHint};
 use uucore::display::Quotable;
 use uucore::error::UResult;
 use uucore::fs::FileInformation;
@@ -236,8 +236,8 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE)
                 .hide(true)
-                .action(clap::ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .action(ArgAction::Append)
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::SHOW_ALL)

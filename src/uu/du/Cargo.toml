@@ -18,7 +18,6 @@ path = "src/du.rs"
 chrono = { workspace = true }
 # For the --exclude & --exclude-from options
 glob = { workspace = true }
-clap = { workspace = true }
 uucore = { workspace = true }
 
 [target.'cfg(target_os = "windows")'.dependencies]

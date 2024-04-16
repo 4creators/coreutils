@@ -7,13 +7,13 @@
 
 use crate::paths::Input;
 use crate::{parse, platform, Quotable};
-use clap::{crate_version, value_parser};
-use clap::{Arg, ArgAction, ArgMatches, Command};
 use fundu::{DurationParser, SaturatingInto};
 use same_file::Handle;
 use std::ffi::OsString;
 use std::io::IsTerminal;
 use std::time::Duration;
+use uucore::deps::clap::{crate_version, value_parser};
+use uucore::deps::clap::{Arg, ArgAction, ArgMatches, Command, ValueHint};
 use uucore::error::{UResult, USimpleError, UUsageError};
 use uucore::parse_size::{parse_size_u64, ParseSizeError};
 use uucore::{format_usage, help_about, help_usage, show_warning};
@@ -181,7 +181,7 @@ impl Settings {
         settings
     }
 
-    pub fn from(matches: &clap::ArgMatches) -> UResult<Self> {
+    pub fn from(matches: &ArgMatches) -> UResult<Self> {
         // We're parsing --follow, -F and --retry under the following conditions:
         // * -F sets --retry and --follow=name
         // * plain --follow or short -f is the same like specifying --follow=descriptor
@@ -589,7 +589,7 @@ pub fn uu_app() -> Command {
                 .action(ArgAction::Append)
                 .num_args(1..)
                 .value_parser(value_parser!(OsString))
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

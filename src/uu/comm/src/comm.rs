@@ -13,7 +13,7 @@ use uucore::error::{FromIo, UResult, USimpleError};
 use uucore::line_ending::LineEnding;
 use uucore::{format_usage, help_about, help_usage};
 
-use clap::{crate_version, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{crate_version, Arg, ArgAction, ArgMatches, Command, ValueHint};
 
 const ABOUT: &str = help_about!("comm.md");
 const USAGE: &str = help_usage!("comm.md");
@@ -218,12 +218,12 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::FILE_1)
                 .required(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::FILE_2)
                 .required(true)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
         .arg(
             Arg::new(options::TOTAL)

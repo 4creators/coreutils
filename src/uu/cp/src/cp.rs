@@ -18,12 +18,15 @@ use std::os::unix::ffi::OsStrExt;
 use std::os::unix::fs::{FileTypeExt, PermissionsExt};
 use std::path::{Path, PathBuf, StripPrefixError};
 
-use clap::{builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command};
 use filetime::FileTime;
 use indicatif::{ProgressBar, ProgressStyle};
 #[cfg(unix)]
 use libc::mkfifo;
 use quick_error::ResultExt;
+use uucore::deps::clap::{
+    builder::PossibleValuesParser, builder::ValueParser, crate_version, error::ErrorKind,
+    parser::ValueSource, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 
 use platform::copy_on_write;
 use uucore::display::Quotable;
@@ -437,7 +440,7 @@ pub fn uu_app() -> Command {
                 .conflicts_with(options::NO_TARGET_DIRECTORY)
                 .long(options::TARGET_DIRECTORY)
                 .value_name(options::TARGET_DIRECTORY)
-                .value_hint(clap::ValueHint::DirPath)
+                .value_hint(ValueHint::DirPath)
                 .value_parser(ValueParser::path_buf())
                 .help("copy all SOURCE arguments into target-directory"),
         )
@@ -559,9 +562,7 @@ pub fn uu_app() -> Command {
                 .long(options::PRESERVE)
                 .action(ArgAction::Append)
                 .use_value_delimiter(true)
-                .value_parser(clap::builder::PossibleValuesParser::new(
-                    PRESERVABLE_ATTRIBUTES,
-                ))
+                .value_parser(PossibleValuesParser::new(PRESERVABLE_ATTRIBUTES))
                 .num_args(0..)
                 .require_equals(true)
                 .value_name("ATTR_LIST")
@@ -682,7 +683,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::PROGRESS_BAR)
                 .long(options::PROGRESS_BAR)
                 .short('g')
-                .action(clap::ArgAction::SetTrue)
+                .action(ArgAction::SetTrue)
                 .help(
                     "Display a progress bar. \n\
                 Note: this feature is not supported by GNU coreutils.",
@@ -691,7 +692,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new(options::PATHS)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::AnyPath)
+                .value_hint(ValueHint::AnyPath)
                 .value_parser(ValueParser::path_buf()),
         )
 }
@@ -705,10 +706,10 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
         let mut app = uu_app();
 
         match e.kind() {
-            clap::error::ErrorKind::DisplayHelp => {
+            ErrorKind::DisplayHelp => {
                 app.print_help()?;
             }
-            clap::error::ErrorKind::DisplayVersion => print!("{}", app.render_version()),
+            ErrorKind::DisplayVersion => print!("{}", app.render_version()),
             _ => return Err(Box::new(e.with_exit_code(1))),
         };
     } else if let Ok(mut matches) = matches {
@@ -904,8 +905,7 @@ impl Options {
 
         for not_implemented_opt in not_implemented_opts {
             if matches.contains_id(not_implemented_opt)
-                && matches.value_source(not_implemented_opt)
-                    == Some(clap::parser::ValueSource::CommandLine)
+                && matches.value_source(not_implemented_opt) == Some(ValueSource::CommandLine)
             {
                 return Err(Error::NotImplemented(not_implemented_opt.to_string()));
             }

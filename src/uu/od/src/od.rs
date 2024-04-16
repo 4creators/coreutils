@@ -38,8 +38,9 @@ use crate::parse_nrofbytes::parse_number_of_bytes;
 use crate::partialreader::PartialReader;
 use crate::peekreader::{PeekRead, PeekReader};
 use crate::prn_char::format_ascii_dump;
-use clap::ArgAction;
-use clap::{crate_version, parser::ValueSource, Arg, ArgMatches, Command};
+use uucore::deps::clap::{
+    crate_version, parser::ValueSource, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::Quotable;
 use uucore::error::{UResult, USimpleError};
 use uucore::parse_size::ParseSizeError;
@@ -453,7 +454,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::FILENAME)
                 .hide(true)
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

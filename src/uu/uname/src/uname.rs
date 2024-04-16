@@ -5,8 +5,8 @@
 
 // spell-checker:ignore (API) nodename osname sysname (options) mnrsv mnrsvo
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use platform_info::*;
+use uucore::deps::clap::{crate_version, Arg, ArgAction, Command};
 use uucore::{
     error::{UResult, USimpleError},
     format_usage, help_about, help_usage,

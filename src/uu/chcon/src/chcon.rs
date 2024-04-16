@@ -5,12 +5,11 @@
 // spell-checker:ignore (vars) RFILE
 #![allow(clippy::upper_case_acronyms)]
 
-use clap::builder::ValueParser;
 use uucore::error::{UResult, USimpleError, UUsageError};
 use uucore::{display::Quotable, format_usage, help_about, help_usage, show_error, show_warning};
 
-use clap::{crate_version, Arg, ArgAction, Command};
 use selinux::{OpaqueSecurityContext, SecurityContext};
+use uucore::deps::clap::{builder::ValueParser, crate_version, Arg, ArgAction, Command, ValueHint};
 
 use std::borrow::Cow;
 use std::ffi::{CStr, CString, OsStr, OsString};
@@ -195,7 +194,7 @@ pub fn uu_app() -> Command {
             Arg::new(options::REFERENCE)
                 .long(options::REFERENCE)
                 .value_name("RFILE")
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .conflicts_with_all([options::USER, options::ROLE, options::TYPE, options::RANGE])
                 .help(
                     "Use security context of RFILE, rather than specifying \
@@ -208,7 +207,7 @@ pub fn uu_app() -> Command {
                 .short('u')
                 .long(options::USER)
                 .value_name("USER")
-                .value_hint(clap::ValueHint::Username)
+                .value_hint(ValueHint::Username)
                 .help("Set user USER in the target security context.")
                 .value_parser(ValueParser::os_string()),
         )
@@ -295,7 +294,7 @@ pub fn uu_app() -> Command {
         .arg(
             Arg::new("FILE")
                 .action(ArgAction::Append)
-                .value_hint(clap::ValueHint::FilePath)
+                .value_hint(ValueHint::FilePath)
                 .num_args(1..)
                 .value_parser(ValueParser::os_string()),
         )
@@ -311,7 +310,7 @@ struct Options {
     files: Vec<PathBuf>,
 }
 
-fn parse_command_line(config: clap::Command, args: impl uucore::Args) -> Result<Options> {
+fn parse_command_line(config: Command, args: impl uucore::Args) -> Result<Options> {
     let matches = config.try_get_matches_from(args)?;
 
     let verbose = matches.get_flag(options::VERBOSE);

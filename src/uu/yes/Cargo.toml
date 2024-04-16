@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/yes.rs"
 
 [dependencies]
-clap = { workspace = true }
 itertools = { workspace = true }
 
 [target.'cfg(unix)'.dependencies]

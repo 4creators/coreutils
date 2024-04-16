@@ -15,8 +15,6 @@ edition = "2021"
 path = "src/nl.rs"
 
 [dependencies]
-clap = { workspace = true }
-regex = { workspace = true }
 uucore = { workspace = true }
 
 [[bin]]

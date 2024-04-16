@@ -11,7 +11,6 @@ use std::{
     time::Duration,
 };
 
-use clap::{crate_version, value_parser, Arg, ArgAction, ArgMatches, Command};
 use crossterm::event::KeyEventKind;
 use crossterm::{
     cursor::{MoveTo, MoveUp},
@@ -19,6 +18,9 @@ use crossterm::{
     execute, queue,
     style::Attribute,
     terminal::{self, Clear, ClearType},
+};
+use uucore::deps::clap::{
+    crate_version, value_parser, Arg, ArgAction, ArgMatches, Command, ValueHint,
 };
 
 use unicode_segmentation::UnicodeSegmentation;
@@ -264,7 +266,7 @@ pub fn uu_app() -> Command {
                 .required(false)
                 .action(ArgAction::Append)
                 .help("Path to the files to be read")
-                .value_hint(clap::ValueHint::FilePath),
+                .value_hint(ValueHint::FilePath),
         )
 }
 

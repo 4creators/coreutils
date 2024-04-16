@@ -5,7 +5,7 @@
 
 use std::io::{stdin, Read};
 
-use clap::Command;
+use uucore::deps::clap::Command;
 use uucore::{encoding::Format, error::UResult, help_about, help_usage};
 
 pub mod base_common;

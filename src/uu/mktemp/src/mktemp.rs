@@ -5,7 +5,10 @@
 
 // spell-checker:ignore (paths) GPGHome findxs
 
-use clap::{builder::ValueParser, crate_version, Arg, ArgAction, ArgMatches, Command};
+use uucore::deps::clap::{
+    builder::ValueParser, crate_version, error::ContextKind, error::ContextValue,
+    error::ErrorKind as ClapErrorKind, Arg, ArgAction, ArgMatches, Command, ValueHint,
+};
 use uucore::display::{println_verbatim, Quotable};
 use uucore::error::{FromIo, UError, UResult, UUsageError};
 use uucore::{format_usage, help_about, help_usage};
@@ -318,10 +321,10 @@ pub fn uumain(args: impl uucore::Args) -> UResult<()> {
     let matches = match uu_app().try_get_matches_from(&args) {
         Ok(m) => m,
         Err(e) => {
-            if e.kind() == clap::error::ErrorKind::TooManyValues
+            if e.kind() == ClapErrorKind::TooManyValues
                 && e.context().any(|(kind, val)| {
-                    kind == clap::error::ContextKind::InvalidArg
-                        && val == &clap::error::ContextValue::String("[template]".into())
+                    kind == ContextKind::InvalidArg
+                        && val == &ContextValue::String("[template]".into())
                 })
             {
                 return Err(UUsageError::new(1, "too many templates"));
@@ -415,7 +418,7 @@ pub fn uu_app() -> Command {
                 .value_name("DIR")
                 .num_args(1)
                 .value_parser(ValueParser::path_buf())
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
         .arg(
             Arg::new(OPT_TMPDIR)
@@ -434,7 +437,7 @@ pub fn uu_app() -> Command {
                 .require_equals(true)
                 .overrides_with(OPT_P)
                 .value_parser(ValueParser::path_buf())
-                .value_hint(clap::ValueHint::DirPath),
+                .value_hint(ValueHint::DirPath),
         )
         .arg(
             Arg::new(OPT_T)

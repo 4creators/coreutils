@@ -15,7 +15,6 @@ edition = "2021"
 path = "src/who.rs"
 
 [dependencies]
-clap = { workspace = true }
 uucore = { workspace = true, features = ["utmpx"] }
 
 [[bin]]

@@ -10,6 +10,8 @@ pub extern crate libc;
 #[cfg(all(feature = "windows-sys", target_os = "windows"))]
 pub extern crate windows_sys;
 
+pub mod deps;
+
 //## internal modules
 
 mod features; // feature-gated code modules
