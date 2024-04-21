@@ -5,7 +5,7 @@
 // spell-checker:ignore (ToDO) Sdivide
 
 use crate::common::util::{TestScenario, UCommand};
-use chrono::{DateTime, Duration, Utc};
+use chrono::{DateTime, Duration, Local, TimeZone, Utc};
 use std::fs::metadata;
 
 const DATE_TIME_FORMAT: &str = "%b %d %H:%M %Y";
@@ -16,8 +16,20 @@ fn file_last_modified_time(ucmd: &UCommand, path: &str) -> String {
     file_metadata
         .map(|i| {
             i.modified()
-                .map(|x| {
-                    let date_time: DateTime<Utc> = x.into();
+                .map(|mut x| {
+                    let mut date_time: DateTime<Utc> = x.into();
+                    if cfg!(windows) {
+                        let utc_offset = chrono::Local
+                            .timestamp_opt(date_time.timestamp(), 0)
+                            .unwrap()
+                            .offset()
+                            .local_minus_utc()
+                            .into();
+                        x = x
+                            .checked_add(Duration::new(utc_offset, 0).unwrap().to_std().unwrap())
+                            .unwrap();
+                    }
+                    date_time = x.into();
                     date_time.format(DATE_TIME_FORMAT).to_string()
                 })
                 .unwrap_or_default()
@@ -25,7 +37,7 @@ fn file_last_modified_time(ucmd: &UCommand, path: &str) -> String {
         .unwrap_or_default()
 }
 
-fn all_minutes(from: DateTime<Utc>, to: DateTime<Utc>) -> Vec<String> {
+fn all_minutes(from: DateTime<Local>, to: DateTime<Local>) -> Vec<String> {
     let to = to + Duration::try_minutes(1).unwrap();
     let mut vec = vec![];
     let mut current = from;
@@ -36,8 +48,8 @@ fn all_minutes(from: DateTime<Utc>, to: DateTime<Utc>) -> Vec<String> {
     vec
 }
 
-fn valid_last_modified_template_vars(from: DateTime<Utc>) -> Vec<Vec<(String, String)>> {
-    all_minutes(from, Utc::now())
+fn valid_last_modified_template_vars(from: DateTime<Local>) -> Vec<Vec<(String, String)>> {
+    all_minutes(from, Local::now())
         .into_iter()
         .map(|time| vec![("{last_modified_time}".to_string(), time)])
         .collect()
@@ -253,7 +265,7 @@ fn test_with_suppress_error_option() {
 fn test_with_stdin() {
     let expected_file_path = "stdin.log.expected";
     let mut scenario = new_ucmd!();
-    let start = Utc::now();
+    let start = Local::now();
     scenario
         .pipe_in_fixture("stdin.log")
         .args(&["--pages=1:2", "-n", "-"])
@@ -316,7 +328,7 @@ fn test_with_mpr() {
     let expected_test_file_path = "mpr.log.expected";
     let expected_test_file_path1 = "mpr1.log.expected";
     let expected_test_file_path2 = "mpr2.log.expected";
-    let start = Utc::now();
+    let start = Local::now();
     new_ucmd!()
         .args(&["--pages=1:2", "-m", "-n", test_file_path, test_file_path1])
         .succeeds()
@@ -325,7 +337,7 @@ fn test_with_mpr() {
             &valid_last_modified_template_vars(start),
         );
 
-    let start = Utc::now();
+    let start = Local::now();
     new_ucmd!()
         .args(&["--pages=2:4", "-m", "-n", test_file_path, test_file_path1])
         .succeeds()
@@ -334,7 +346,7 @@ fn test_with_mpr() {
             &valid_last_modified_template_vars(start),
         );
 
-    let start = Utc::now();
+    let start = Local::now();
     new_ucmd!()
         .args(&[
             "--pages=1:2",
@@ -441,7 +453,7 @@ fn test_with_join_lines_option() {
     let test_file_2 = "test.log";
     let expected_file_path = "joined.log.expected";
     let mut scenario = new_ucmd!();
-    let start = Utc::now();
+    let start = Local::now();
     scenario
         .args(&["+1:2", "-J", "-m", test_file_1, test_file_2])
         .run()
